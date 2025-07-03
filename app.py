@@ -102,7 +102,9 @@ with st.sidebar:
     ]
     
     for i, question in enumerate(example_questions):
-        if st.button(f"📝 Use Example {i+1}", key=f"example_{i}"):
+    if st.button(f"📝 Use Example {i+1}", key=f"example_{i}"):
+        st.session_state.example_question = question
+        st.rerun()  # Force refresh to load the question"):
             st.session_state.example_question = question
     
     st.header("📊 Features")
