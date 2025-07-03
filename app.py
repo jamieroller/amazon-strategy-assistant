@@ -4,8 +4,23 @@ import os
 from dotenv import load_dotenv
 from utils.ai_agent import AmazonStrategyAgent
 
-# Load environment variables
+# Load environment variables (works for both local and cloud)
 load_dotenv()
+
+# Initialize AI agent with Streamlit secrets fallback
+try:
+    # Try environment variables first, then Streamlit secrets
+    openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
+    serpapi_key = os.getenv("SERPAPI_API_KEY") or st.secrets.get("SERPAPI_API_KEY")
+    
+    agent = AmazonStrategyAgent(
+        openai_api_key=openai_key,
+        serpapi_key=serpapi_key
+    )
+    agent_ready = True
+except Exception as e:
+    agent_ready = False
+    st.error(f"⚠️ Configuration Error: {e}")
 
 # Page configuration
 st.set_page_config(
@@ -57,17 +72,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
-# Initialize AI agent
-try:
-    agent = AmazonStrategyAgent(
-        openai_api_key=os.getenv("OPENAI_API_KEY"),
-        serpapi_key=os.getenv("SERPAPI_API_KEY")
-    )
-    agent_ready = True
-except Exception as e:
-    agent_ready = False
-    st.error(f"⚠️ Configuration Error: {e}")
 
 # Header with professional styling
 st.markdown("""
