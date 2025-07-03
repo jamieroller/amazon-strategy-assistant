@@ -102,9 +102,15 @@ with st.sidebar:
     ]
     
     for i, question in enumerate(example_questions):
-    if st.button(f"📝 Use Example {i+1}", key=f"example_{i}"):
-        st.session_state.example_question = question
+        if st.button(f"📝 Use Example {i+1}", key=f"example_{i}"):
+            st.session_state.example_question = question
     
+    st.header("📊 Features")
+    st.write("✅ Real-time market research")
+    st.write("✅ Competitive analysis")
+    st.write("✅ Professional reports")
+    st.write("✅ Downloadable insights")
+    st.write("✅ Source citations")    
     st.header("📊 Features")
     st.write("✅ Real-time market research")
     st.write("✅ Competitive analysis")
