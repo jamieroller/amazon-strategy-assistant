@@ -225,3 +225,42 @@ if st.button("🔍 Generate Strategy Report", type="primary", use_container_widt
                         label="📄 Download Report (Markdown)",
                         data=report_with_sources,
                         file_name=f"amazon_strategy_report_{question[:30].replace(' ', '_')}.md",
+                        mime="text/markdown",
+                        use_container_width=True
+                    )
+                
+                with col2:
+                    # Copy to clipboard functionality
+                    st.code(report_with_sources[:200] + "...", language="markdown")
+                    st.caption("💡 Copy the full report above to paste into your documents")
+                
+            except Exception as e:
+                st.error(f"❌ **Error generating report:** {str(e)}")
+                st.markdown("""
+                **Troubleshooting tips:**
+                - Check your internet connection
+                - Verify API keys are configured correctly  
+                - Try a simpler question to test the system
+                - Contact support if the issue persists
+                """)
+
+# Footer with additional info
+st.markdown("---")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("**🔗 About**")
+    st.markdown("Powered by OpenAI GPT-4 and real-time market research")
+
+with col2:
+    st.markdown("**⚡ Performance**")
+    st.markdown(f"Analysis Depth: {research_depth}")
+
+with col3:
+    st.markdown("**🛡️ Data**")
+    st.markdown("Real-time Amazon market data")
+
+# Optional: Add analytics or feedback
+if st.button("👍 This tool was helpful", key="feedback"):
+    st.balloons()
+    st.success("Thank you for the feedback! 🙏")
