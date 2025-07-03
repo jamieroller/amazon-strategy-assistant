@@ -93,6 +93,8 @@ with st.sidebar:
     )
     
     st.header("💡 Example Questions")
+    st.write("Click to use an example question:")
+    
     example_questions = [
         "What are emerging Amazon advertising trends for supplement brands?",
         "How should skincare brands compete against top sellers on Amazon?", 
@@ -101,16 +103,11 @@ with st.sidebar:
         "How can I optimize my Amazon product listings for better conversion?"
     ]
     
-    for i, question in enumerate(example_questions):
-        if st.button(f"📝 Use Example {i+1}", key=f"example_{i}"):
-            st.session_state.example_question = question
+    # Handle example question selection
+    for i, example_q in enumerate(example_questions):
+        if st.button(f"📝 Example {i+1}", key=f"example_{i}", help=example_q):
+            st.session_state.selected_question = example_q
     
-    st.header("📊 Features")
-    st.write("✅ Real-time market research")
-    st.write("✅ Competitive analysis")
-    st.write("✅ Professional reports")
-    st.write("✅ Downloadable insights")
-    st.write("✅ Source citations")    
     st.header("📊 Features")
     st.write("✅ Real-time market research")
     st.write("✅ Competitive analysis")
@@ -124,15 +121,16 @@ col1, col2 = st.columns([2, 1])
 with col1:
     st.header("📝 Your Strategy Question")
     
-    # Use example question if selected
-    default_question = ""
-    if 'example_question' in st.session_state:
-        default_question = st.session_state.example_question
-        del st.session_state.example_question
+    # Initialize question value
+    question_value = ""
+    if 'selected_question' in st.session_state:
+        question_value = st.session_state.selected_question
+        # Clear it after using it
+        del st.session_state.selected_question
     
     question = st.text_area(
         "What Amazon strategy question would you like researched?",
-        value=default_question,
+        value=question_value,
         placeholder="e.g., What are the key competitive advantages for supplement brands on Amazon in 2024?",
         height=120,
         help="Be specific about your brand category, target market, or strategic focus"
@@ -156,7 +154,7 @@ with col2:
 
 # Generate button with enhanced styling
 if st.button("🔍 Generate Strategy Report", type="primary", use_container_width=True):
-    if not question:
+    if not question or question.strip() == "":
         st.error("⚠️ Please enter a strategy question to get started!")
     elif not agent_ready:
         st.error("🔧 System not ready. Please check your configuration.")
